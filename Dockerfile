@@ -1,6 +1,6 @@
 FROM nvidia/cuda:12.2.2-runtime-ubuntu22.04
 
-ENV PYTHONPATH="/opt/project"
+ENV PYTHONPATH="/home/multiverse"
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
   python3-pip \
@@ -12,10 +12,33 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
   && python -m pip install --upgrade pip \
   && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-WORKDIR /opt/project
+  
+# Add user and copy project files
+RUN useradd -m multiverse
+COPY . /home/multiverse
+RUN chown -R multiverse:multiverse /home/multiverse
 
-COPY requirements.txt ./
 
+# copy the script to the working directory and set permissions
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
+
+# Command to run the script to source the environment variables
+ENTRYPOINT ["/entrypoint.sh"]
+
+
+# Set the user to multiverse
+USER multiverse
+
+
+# Set the working directory
+WORKDIR /home/multiverse
+
+
+# Install Python dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY . /opt/project
+
+# Command to run the Python script
+CMD ["python3", "/home/multiverse/inference_script.py"]

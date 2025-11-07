@@ -2,10 +2,12 @@
 # SPDX-FileCopyrightText: Copyright contributors to the vLLM project
 
 from pathlib import Path
+import os
 from vllm import LLM, SamplingParams
 
 # Model path (using the same path as before)
-model_path = str(Path(__file__).parent / "models/cai-llama-3_1-8B-v2_1_0")
+
+model_path = os.environ.get('KIT_INPUTS_FILE')
 
 # Sample prompts.
 prompts = [
