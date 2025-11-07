@@ -14,9 +14,6 @@ This guide provides step-by-step instructions for and utilizing the CAI_Llama3_1
 The project directory is organized as follows:
 
 ```
-cai_llama3_1_8b_v2_1_0
-│
-├── models
 ├── Dockerfile
 ├── README.md
 ├── inference_script.py
