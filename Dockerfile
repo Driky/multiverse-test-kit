@@ -13,6 +13,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && ln -s /usr/bin/python3.10 /usr/bin/python \
     && python -m pip install --upgrade pip
 
+# Copy entrypoint script
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
 # Add user
 RUN useradd -m multiverse
 
@@ -38,10 +42,6 @@ USER multiverse
 
 # Copy the rest of the project
 COPY --chown=multiverse:multiverse . /home/multiverse
-
-# Copy entrypoint script
-COPY entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
 
 # Set entrypoint
 ENTRYPOINT ["/entrypoint.sh"]
