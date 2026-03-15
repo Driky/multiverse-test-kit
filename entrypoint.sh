@@ -11,8 +11,11 @@ fi
 mkdir -p /tmp/outputs /tmp/logs
 chmod 755 /tmp/outputs /tmp/logs
 
-if [ -f "$KIT_INPUTS_FILE" ]; then
-  echo "Found input file, processing…"
+if [ -d "$KIT_INPUTS_FILE" ]; then
+  echo "Input directory: $KIT_INPUTS_FILE"
+  find "$KIT_INPUTS_FILE" | sort | sed "s|[^/]*/|  |g"
+elif [ -f "$KIT_INPUTS_FILE" ]; then
+  echo "Input file: $KIT_INPUTS_FILE"
 else
   echo "No input file supplied, continuing without it"
 fi
